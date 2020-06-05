@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+Ins_Splinter.ipynb
+Practice.ipynb
