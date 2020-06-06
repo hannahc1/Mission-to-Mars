@@ -6,26 +6,43 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Mission to Mars</title>
     <link
-      rel="stylesheet"
+      rel="stylesheet" 
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    />
+
+    >
+  
   </head>
   <body>
     <div class="container">
       <!-- Add Jumbotron to Header -->
-      <div class="jumbotron text-center">
+      <div class="jumbotron text-center" style="background:skyblue">
         <h1>Mission to Mars</h1>
         <!-- Add a button to activate scraping script -->
-        <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+        <p><a class="btn btn-primary btn-lg" href="/scrape" role="button" style="background:darksalmon">Scrape New Data</a></p>
       </div>
+<!-- Add section for Mars hemispheres -->
+      <div class="row" id="mars-hemi-images">
+        {% for hemisphere in mars.hemi_images %}
+        <div class="col-md-12 text-center">
+         <div class="thumbnail" >
+          <img
+            src="{{hemisphere.img_url | default('static/images/error.png', true) }}"
+            class="img-responsive"
+            alt="Responsive image"
 
+          >
+          <div class="caption"><h4> {{ hemisphere.title }}</h4></div>
+        </div>
+        </div>
+      </div>
+      {% endfor %}
       <!-- Add section for Mars News -->
       <div class="row" id="mars-news">
         <div class="col-md-12">
           <div class="media">
             <div class="media-body">
               <h2>Latest Mars News</h2>
-              <h4 class="media-heading">{{ mars.news_title }}</h4>
+              <h4 class="media-heading" style="background-color:lightblue">{{ mars.news_title }}</h4>
               <p>{{ mars.news_paragraph }}</p>
             </div>
           </div>
@@ -45,11 +62,11 @@
           />
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4 text-center" >
           <!-- Mars Facts -->
           <div class="row" id="mars-facts">
-             <h4>Mars Facts</h4>
-              {{ mars.facts | safe }}   
+             <h2> Mars Facts </h2>
+              <table class="table table-striped" {{ mars.facts | safe }}></table>
           </div>
         </div>
       </div>

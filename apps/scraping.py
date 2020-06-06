@@ -28,9 +28,10 @@ def scrape_all():
             news_title = slide_elem.find("div", class_='content_title').get_text()
             # Use the parent element to find the paragraph text
             news_p = slide_elem.find('div', class_="article_teaser_body").get_text()
+            return news_title, news_p
         except AttributeError:
             return None, None    
-        return news_title, news_p
+
 
     # ### Featured Images
 
@@ -80,10 +81,40 @@ def scrape_all():
         # Convert DF back to HTML-ready code, add bootstrap.
         return df.to_html()
 
+    ### Mars Hemispheres
+    def hemi_images(browser):
+        hemi_list=[]
+        for x in range(0,4):
+            # Visit URL
+            url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
+            browser.visit(url)
+            
+            # Find and click the full image button
+            thumb_image_elem = browser.find_by_css("img.thumb")[x]
+            thumb_image_elem.click()
+
+            # Parse the resulting html with soup
+            html = browser.html
+            img_soup = BeautifulSoup(html, 'html.parser')
+
+            # Find the relative image url
+            img_url_rel = img_soup.select_one('img.wide-image').get("src")
+            # Use the base URL to create an absolute URL
+            img_url = f'https://astrogeology.usgs.gov{img_url_rel}'
+            # Get title text
+            title=browser.find_by_css("h2.title").first.value
+
+            img_dict = {'img_url': img_url,'title': title}
+            hemi_list.append(img_dict.copy())
+
+        return hemi_list
+
 # Use mars_news function to pull the data.
     news_title, news_paragraph = mars_news(browser)
+    #print(hemi_images(browser))
     # Run all scraping functions and store results in dictionary
     data = {
+      "hemi_images": hemi_images(browser),
       "news_title": news_title,
       "news_paragraph": news_paragraph,
       "featured_image": featured_image(browser),
