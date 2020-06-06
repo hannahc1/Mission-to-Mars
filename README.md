@@ -1,4 +1,2 @@
 # Mission-to-Mars
-!Capture1.PNG
-!Capture2.PNG
-!Capture3.PNG
+![]https://github.com/hannahc1/Mission-to-Mars/blob/master/Capture1.PNG
